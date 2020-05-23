@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "363889810712",
+    "firebase_url": "https://mileo-276df.firebaseio.com",
+    "project_id": "mileo-276df",
+    "storage_bucket": "mileo-276df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363889810712:android:274e38588f1b10181c526d",
+        "android_client_info": {
+          "package_name": "com.revoyarch.mileo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363889810712-ubilitgtaaac7pa6t7jf5347bahneah5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhEAGJuFst7rV03uhRJHur79iya_Xf-VU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363889810712-ubilitgtaaac7pa6t7jf5347bahneah5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

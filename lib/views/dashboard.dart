@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mileo/services/firebase_methods.dart';
 import 'package:mileo/views/app_bar.dart';
 import 'package:mileo/views/bottom_nav_bar.dart';
 
@@ -12,7 +13,13 @@ class DashBoard extends StatelessWidget {
         child: CustomAppBar(),
       ),
       bottomNavigationBar: BottomNavBar(),
-      body: Container(),
+      body: Container(
+        child: Center(
+          child: RaisedButton(
+            onPressed: () => FirebaseMethods().auth(),
+          )
+        ),
+      ),
     );
   }
 }
