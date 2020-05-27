@@ -14,11 +14,6 @@ class DashBoard extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavBar(),
       body: Container(
-        child: Center(
-          child: RaisedButton(
-            onPressed: () => FirebaseMethods().auth(),
-          )
-        ),
       ),
     );
   }

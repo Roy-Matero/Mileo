@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mileo/views/dashboard.dart';
+
+import 'views/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mileo',
-      home: DashBoard(),
+      home: Home(),
     );
     }
 }
