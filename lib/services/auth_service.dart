@@ -14,7 +14,7 @@ abstract class AuthService{
     Future<void> sendPasswordResetEmail(String email);
     Future<User> signInWithEmailAndLink({String email, String link});
     Future<bool> isSignInWithEmailLink(String link);
-    Future<User> sendSignInWithEmailLink({
+    Future<void> sendSignInWithEmailLink({
       @required String email,
       @required String url,
       @required bool handleCodeInApp,
@@ -23,4 +23,10 @@ abstract class AuthService{
       @required bool androidInstallIfNotAvailable,
       @required String androidMinimumVersion,
     });
+    Future<User> signInWithGoogle();
+    Future<User> signInWithFacebook();
+
+    Future<void> signOut();
+    Stream<User> get onAuthStateChanged;
+    void dispose();
 }
