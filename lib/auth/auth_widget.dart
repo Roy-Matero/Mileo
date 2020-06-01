@@ -10,13 +10,17 @@ class AuthWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    // print(userSnapshot.connectionState);
     if (userSnapshot.connectionState == ConnectionState.active){
       return userSnapshot.hasData ? Home() : SignInPageBuilder();
     }
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );  
+    else{
+      return Scaffold(
+//      backgroundColor: Colors.transparent,
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
   }
 }

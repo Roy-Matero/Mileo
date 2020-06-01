@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mileo/chat/contacts_page.dart';
 
 
 class DashBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: Center(
-        child: Text("RRRaaa")
-      ),
-    );
+    return ContactsPage();
   }
 }
 

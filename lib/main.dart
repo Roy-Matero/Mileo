@@ -13,7 +13,6 @@ import 'services/email_link_secure_store.dart';
 import 'services/firebase_email_link_handler.dart';
 
 Future<void> main() async {
-  // Fix for: Unhandled Exception: ServicesBinding.defaultBinaryMessenger was accessed before the binding was initialized.
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
@@ -47,7 +46,6 @@ class MyApp extends StatelessWidget {
       child: AuthWidgetBuilder(
           builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
         return MaterialApp(
-          theme: ThemeData(primarySwatch: Colors.indigo),
           home: EmailLinkErrorPresenter.create(
             context,
             child: AuthWidget(userSnapshot: userSnapshot),

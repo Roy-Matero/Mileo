@@ -87,7 +87,7 @@ class _EmailLinkSignInPageState extends State<EmailLinkSignInPage> {
       // Send link
       await widget.linkHandler.sendSignInWithEmailLink(
         email: _email,
-        url: 'firebase project url',
+        url: 'https://mileo-276df.firebaseapp.com',
         handleCodeInApp: true,
         packageName: packageInfo.packageName,
         androidInstallIfNotAvailable: true,

@@ -1,32 +1,42 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:mileo/models/user_model.dart';
 import 'package:mileo/resources/firebase_auth_methods.dart';
 import 'package:mileo/services/auth_service.dart';
 
+
+// add other authentication types here
+enum AuthServiceType { firebase }
+
 class AuthServiceAdapter implements AuthService {
-  static final FirebaseAuthMethods _firebaseAuthMethods = FirebaseAuthMethods();
+  AuthServiceAdapter({AuthServiceType initialAuthServiceType = AuthServiceType.firebase})
+      : authServiceTypeNotifier =
+            ValueNotifier<AuthServiceType>(initialAuthServiceType) {
+    _setup();
+  }
 
-  AuthService authService = _firebaseAuthMethods;
+  final ValueNotifier<AuthServiceType> authServiceTypeNotifier;
 
-  static StreamSubscription<User> _firebaseAuthSubscription =
+  AuthServiceType get authServiceType => authServiceTypeNotifier.value;
+
+  final FirebaseAuthMethods _firebaseAuthMethods = FirebaseAuthMethods();
+
+  AuthService get authService => _firebaseAuthMethods;
+
+  StreamSubscription<User> _firebaseAuthSubscription; 
+
+  final StreamController<User> _onAuthStateChangedController =
+      StreamController<User>.broadcast();
+
+  void _setup() {
+    _firebaseAuthSubscription =
         _firebaseAuthMethods.onAuthStateChanged.listen((User user) {
       _onAuthStateChangedController.add(user);
     }, onError: (dynamic error) {
       _onAuthStateChangedController.addError(error);
     });
-
-  static final StreamController<User> _onAuthStateChangedController =
-      StreamController<User>.broadcast();
-
-  // void _setup() {
-  //   _firebaseAuthSubscription =
-  //       _firebaseAuthMethods.onAuthStateChanged.listen((User user) {
-  //     _onAuthStateChangedController.add(user);
-  //   }, onError: (dynamic error) {
-  //     _onAuthStateChangedController.addError(error);
-  //   });
-  // }
+  }
 
   @override
   Future<User> createUserWithEmailAndPassword(

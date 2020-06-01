@@ -10,4 +10,23 @@ class User{
   final String phoneNumber;
   final String photoUrl;
 
+  factory User.fromMap(Map<String, dynamic> userMap){
+    return User(
+      uid: userMap['uid'],
+      name: userMap['name'],
+      email:  userMap['email'],
+      phoneNumber: userMap['phoneNumber'],
+      photoUrl: userMap['photoUrl'],
+    );
+  }
+
+  Map<String, dynamic> toMap(User user){
+    return {
+      'uid': user.uid,
+      'name': user.name,
+      'email': user.email,
+      'phoneNumber': user.phoneNumber,
+      'photoUrl': user.photoUrl,
+    };
+  }
 }

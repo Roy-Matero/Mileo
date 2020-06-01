@@ -6,6 +6,7 @@ import 'package:mileo/services/auth_service.dart';
 import 'package:mileo/widgets/exception_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
+import 'sign_in/email_link/email_link_sign_in_page.dart';
 import 'sign_in/email_password_auth/email_password_sign_in_page.dart';
 import 'sign_in_manager.dart';
 import 'social_sign_in_button.dart';
@@ -94,13 +95,13 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  // Future<void> _signInWithEmailLink(BuildContext context) async {
-  //   final navigator = Navigator.of(context);
-  //   await EmailLinkSignInPage.show(
-  //     context,
-  //     onSignedIn: navigator.pop,
-  //   );
-  // }
+   Future<void> _signInWithEmailLink(BuildContext context) async {
+     final navigator = Navigator.of(context);
+     await EmailLinkSignInPage.show(
+       context,
+       onSignedIn: navigator.pop,
+     );
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +147,7 @@ class SignInPage extends StatelessWidget {
             
             SocialSignInButton(
               key: googleButtonKey,
-              imageLink: 'assets/go-logo.png',
+              imageLink: 'https://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png',
               text: signInWithGoogle,
               onPressed: isLoading ? null : () => _signInWithGoogle(context),
               color: Colors.white,
@@ -154,7 +155,7 @@ class SignInPage extends StatelessWidget {
             SizedBox(height: 8),
             SocialSignInButton(
               key: facebookButtonKey,
-              imageLink: 'assets/fb-logo.png',
+              imageLink: 'https://1000logos.net/wp-content/uploads/2016/11/Facebook-Logo.png',
               text: signInWithFacebook,
               textColor: Colors.white,
               onPressed: isLoading ? null : () => _signInWithFacebook(context),
@@ -173,7 +174,7 @@ class SignInPage extends StatelessWidget {
             SignInButton(
               key: emailLinkButtonKey,
               text: signInWithEmailLink,
-              // onPressed: isLoading ? null : () => _signInWithEmailLink(context),
+               onPressed: isLoading ? null : () => _signInWithEmailLink(context),
               textColor: Colors.white,
               color: Colors.blueGrey[700],
             ),

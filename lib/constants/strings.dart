@@ -59,3 +59,9 @@ const String userAlreadySignedIn =
       'Received an activation link but you are already signed in.';
 const String isNotSignInWithEmailLinkMessage =
       'Invalid activation link';
+
+
+
+const String MESSAGES_COLLECTION = 'messages';
+const String CONTACTS_COLLECTION = 'contacts';
+const String USERS_COLLECTION = 'users';
