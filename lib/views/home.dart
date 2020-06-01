@@ -3,7 +3,6 @@ import 'package:mileo/map/map_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.widget.dart';
 
-import 'bottom_nav_bar.dart';
 import 'dashboard.dart';
 import 'profile.dart';
 
@@ -31,28 +30,43 @@ class _HomeState extends State<Home> {
   List<PersistentBottomNavBarItem> tabBarItems = [
     PersistentBottomNavBarItem(
       icon: Icon(Icons.dashboard),
-      title: 'DashBoard'
+      title: 'DashBoard',
+      activeColor: Color(0xFF0EF7F7),
+      // activeColor: Colors.red,
+      inactiveColor: Color(0xEFD0D3DD),
     ),
     PersistentBottomNavBarItem(
       icon: Icon(Icons.map),
-      title: 'Map'
+      title: 'Map',
+      activeColor: Color(0xFF0EF7F7),
+      inactiveColor: Color(0xEFD0D3DD),
     ),
     PersistentBottomNavBarItem(
       icon: Icon(Icons.face),
-      title: 'Profile'
+      title: 'Profile',
+      activeColor: Color(0xFF0EF7F7),
+      inactiveColor: Color(0xEFD0D3DD),
     ),
   ];
 
-  Widget bottomNavBar(){
-
+  Widget bottomNavBar(BuildContext context){
+    var _metrics = MediaQuery.of(context).size;
     return Container(
-      height: 60,
       child: PersistentTabView(
         controller: _tabController,
         screens: screensList,
         items: tabBarItems,
+        neumorphicProperties: NeumorphicProperties(
+          showSubtitleText: true,
+        ),
+        navBarHeight: _metrics.height * .09,
         navBarStyle: NavBarStyle.neumorphic,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xEF344589),
+        onItemSelected: (value) {
+          setState(() {
+            _tabController.index = value;
+          });
+        },
       )
     );
   }
@@ -61,7 +75,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      bottomNavigationBar: bottomNavBar(),
+      bottomNavigationBar: bottomNavBar(context),
       body: screensList[_tabController.index],
     );
   }

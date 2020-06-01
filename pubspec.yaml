@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  provider: ^4.1.2
   cloud_firestore: ^0.13.5
   firebase_auth: ^0.16.1
   persistent_bottom_nav_bar: ^1.5.5
