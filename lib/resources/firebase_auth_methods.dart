@@ -124,6 +124,9 @@ class FirebaseAuthMethods implements AuthService{
     //     message: 'Sign in aborted by user',
     //   );
     // }
+
+// Delete this when you see it !!!!
+    return User();
   }
 
   @override

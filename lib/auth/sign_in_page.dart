@@ -66,25 +66,25 @@ class SignInPage extends StatelessWidget {
     }
   }
 
-  Future<void> _signInWithGoogle(BuildContext context) async {
-    try {
-      await manager.signInWithGoogle();
-    } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER') {
-        _showSignInError(context, e);
-      }
-    }
-  }
+  // Future<void> _signInWithGoogle(BuildContext context) async {
+  //   try {
+  //     await manager.signInWithGoogle();
+  //   } on PlatformException catch (e) {
+  //     if (e.code != 'ERROR_ABORTED_BY_USER') {
+  //       _showSignInError(context, e);
+  //     }
+  //   }
+  // }
 
-  Future<void> _signInWithFacebook(BuildContext context) async {
-    try {
-      await manager.signInWithFacebook();
-    } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER') {
-        _showSignInError(context, e);
-      }
-    }
-  }
+  // Future<void> _signInWithFacebook(BuildContext context) async {
+  //   try {
+  //     await manager.signInWithFacebook();
+  //   } on PlatformException catch (e) {
+  //     if (e.code != 'ERROR_ABORTED_BY_USER') {
+  //       _showSignInError(context, e);
+  //     }
+  //   }
+  // }
 
 
   Future<void> _signInWithEmailAndPassword(BuildContext context) async {
@@ -149,7 +149,7 @@ class SignInPage extends StatelessWidget {
               key: googleButtonKey,
               imageLink: 'https://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png',
               text: signInWithGoogle,
-              onPressed: isLoading ? null : () => _signInWithGoogle(context),
+              // onPressed: isLoading ? null : () => _signInWithGoogle(context),
               color: Colors.white,
             ),
             SizedBox(height: 8),
@@ -158,7 +158,7 @@ class SignInPage extends StatelessWidget {
               imageLink: 'https://1000logos.net/wp-content/uploads/2016/11/Facebook-Logo.png',
               text: signInWithFacebook,
               textColor: Colors.white,
-              onPressed: isLoading ? null : () => _signInWithFacebook(context),
+              // onPressed: isLoading ? null : () => _signInWithFacebook(context),
               color: Color(0xFF334D92),
             ),
             SizedBox(height: 8),

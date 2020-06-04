@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
+import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -10,6 +11,24 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
 
   Completer<GoogleMapController> _controller = Completer();
+
+  var currentLoacation = LocationData;
+
+  Location location = Location();
+
+  CameraPosition _currentPosCam;
+
+  Future<void> _getLocation() async{
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      _currentPosCam = CameraPosition(
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        zoom: 14.4746,
+      ); 
+      
+    });
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosCam));
+  }
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -35,8 +54,8 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To the lake!'),
+        onPressed: _getLocation,
+        label: Text('Go Home!'),
         icon: Icon(Icons.directions_boat),
       ),
     );

@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   @override
     void initState() { 
       super.initState();
-      _tabController = PersistentTabController(initialIndex: 0);
+      _tabController = PersistentTabController(initialIndex: 2);
     }
 
   List<Widget> screensList = [
