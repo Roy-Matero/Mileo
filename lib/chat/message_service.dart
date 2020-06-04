@@ -5,7 +5,7 @@ import 'package:mileo/models/user_model.dart';
 import 'message_model.dart';
 
 class MessageService{
-  Firestore _firestore = Firestore.instance;
+  // Firestore _firestore = Firestore.instance;
   CollectionReference _messagesCollection = Firestore.instance
                                       .collection(MESSAGES_COLLECTION);
 
