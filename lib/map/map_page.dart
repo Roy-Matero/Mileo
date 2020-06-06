@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:async';
-import 'package:location/location.dart';
+import 'package:mileo/map/location_adapter.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -9,60 +10,119 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  Completer<GoogleMapController> controller1;
 
-  Completer<GoogleMapController> _controller = Completer();
+  LocationAdapter _locationAdapter = LocationAdapter();
 
-  var currentLoacation = LocationData;
-
-  Location location = Location();
-
-  CameraPosition _currentPosCam;
-
-  Future<void> _getLocation() async{
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      _currentPosCam = CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 14.4746,
-      ); 
-      
-    });
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosCam));
-  }
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  //static LatLng _center = LatLng(-15.4630239974464, 28.363397732282127);
+  static LatLng _initialPosition;
+  final Set<Marker> _markers = {};
+  static  LatLng _lastMapPosition = _initialPosition;
 
   @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: Container(
-              child: GoogleMap(
-          mapType: MapType.hybrid,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _getLocation,
-        label: Text('Go Home!'),
-        icon: Icon(Icons.directions_boat),
-      ),
-    );
+  void initState() {
+    super.initState();
+    // _getUserLocation();
+    _locationAdapter.getUserLocation().then((value) => _initialPosition = value);
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+
+  _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      controller1.complete(controller);
+    });
+  }
+
+  MapType _currentMapType = MapType.satellite;
+
+  void _onMapTypeButtonPressed() {
+    setState(() {
+      _currentMapType = _currentMapType == MapType.normal
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
+
+  _onCameraMove(CameraPosition position) {
+    _lastMapPosition = position.target;
+  }
+
+  _onAddMarkerButtonPressed() {
+    setState(() {
+      _markers.add(
+          Marker(
+              markerId: MarkerId(_lastMapPosition.toString()),
+              position: _lastMapPosition,
+              infoWindow: InfoWindow(
+                  title: "Pizza Parlour",
+                  snippet: "This is a snippet",
+                  onTap: (){
+                  }
+              ),
+              onTap: (){
+              },
+
+              icon: BitmapDescriptor.defaultMarker));
+    });
+  }
+  Widget mapButton(Function function, Icon icon, Color color) {
+    return RawMaterialButton(
+      onPressed: function,
+      child: icon,
+      shape: new CircleBorder(),
+      elevation: 2.0,
+      fillColor: color,
+      padding: const EdgeInsets.all(7.0),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _initialPosition == null 
+      ? Container(child: Center(child:Text('loading map..', 
+      style: TextStyle(fontFamily: 'Avenir-Medium', 
+      color: Colors.grey[400]),),),) 
+      : Container(
+        child: Stack(children: <Widget>[
+          GoogleMap(
+            markers: _markers,
+
+            mapType: _currentMapType,
+            initialCameraPosition: CameraPosition(
+              target: _initialPosition,
+              zoom: 14.4746,
+            ),
+            onMapCreated: _onMapCreated,
+            zoomGesturesEnabled: true,
+            onCameraMove: _onCameraMove,
+            myLocationEnabled: true,
+            compassEnabled: true,
+            myLocationButtonEnabled: false,
+
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+                margin: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                child: Column(
+                  children: <Widget>[
+                    mapButton(_onAddMarkerButtonPressed,
+                        Icon(
+                            Icons.add_location
+                        ), Colors.blue),
+                    mapButton(
+                        _onMapTypeButtonPressed,
+                        Icon(
+                          IconData(0xf473,
+                              fontFamily: CupertinoIcons.iconFont,
+                              fontPackage: CupertinoIcons.iconFontPackage),
+                        ),
+                        Colors.green),
+                  ],
+                )),
+          )
+        ]),
+      ),
+    );
   }
 }
