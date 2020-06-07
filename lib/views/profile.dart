@@ -35,8 +35,7 @@ class _ProfileState extends State<Profile> {
         child: Text('Upload something'),
         onPressed: () {
           if (_initialPosition != null) {
-            _locationAdapter.saveCurrentLocation(user, _initialPosition));
-            print('Stupid position is not null');
+            _locationAdapter.saveCurrentLocation(user, _initialPosition);
           }
         },
       )),

@@ -21,19 +21,24 @@ class _MapPageState extends State<MapPage> {
   final Set<Marker> _markers = {};
   static LatLng _lastMapPosition = _initialPosition;
 
+  bool isPermissionGranted;
+
   @override
   void initState() {
     super.initState();
     // _getUserLocation();
-    _locationAdapter
-        .getUserLocation()
-        .then((value) {
-          setState(() {
-            _initialPosition = value;
-          });
-        });
+    _locationAdapter.getUserLocation().then((value) {
+      setState(() {
+        _initialPosition = value;
+      });
+    
+    _locationAdapter.askLocationPermission().then((value) {
+      setState(() {
+        isPermissionGranted = value;
+      });
+    });
+    });
   }
-
 
   MapType _currentMapType = MapType.normal;
 
@@ -66,7 +71,7 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: _initialPosition == null
           ? Container(
-            color: Colors.black38,
+              color: Colors.black38,
               child: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -81,8 +86,9 @@ class _MapPageState extends State<MapPage> {
                     zoom: 14.4746,
                   ),
                   onMapCreated: (controller) {
+                    _locationAdapter.saveCurrentLocation(
+                        user, _initialPosition);
                     controller1.complete(controller);
-                    _locationAdapter.saveCurrentLocation(user, _initialPosition);
                   },
                   zoomGesturesEnabled: true,
                   onCameraMove: _onCameraMove,
