@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mileo/map/location_adapter.dart';
+import 'package:mileo/models/user_model.dart';
+import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -17,23 +19,23 @@ class _MapPageState extends State<MapPage> {
   //static LatLng _center = LatLng(-15.4630239974464, 28.363397732282127);
   static LatLng _initialPosition;
   final Set<Marker> _markers = {};
-  static  LatLng _lastMapPosition = _initialPosition;
+  static LatLng _lastMapPosition = _initialPosition;
 
   @override
   void initState() {
     super.initState();
     // _getUserLocation();
-    _locationAdapter.getUserLocation().then((value) => _initialPosition = value);
+    _locationAdapter
+        .getUserLocation()
+        .then((value) {
+          setState(() {
+            _initialPosition = value;
+          });
+        });
   }
 
 
-  _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      controller1.complete(controller);
-    });
-  }
-
-  MapType _currentMapType = MapType.satellite;
+  MapType _currentMapType = MapType.normal;
 
   void _onMapTypeButtonPressed() {
     setState(() {
@@ -47,24 +49,6 @@ class _MapPageState extends State<MapPage> {
     _lastMapPosition = position.target;
   }
 
-  _onAddMarkerButtonPressed() {
-    setState(() {
-      _markers.add(
-          Marker(
-              markerId: MarkerId(_lastMapPosition.toString()),
-              position: _lastMapPosition,
-              infoWindow: InfoWindow(
-                  title: "Pizza Parlour",
-                  snippet: "This is a snippet",
-                  onTap: (){
-                  }
-              ),
-              onTap: (){
-              },
-
-              icon: BitmapDescriptor.defaultMarker));
-    });
-  }
   Widget mapButton(Function function, Icon icon, Color color) {
     return RawMaterialButton(
       onPressed: function,
@@ -75,54 +59,57 @@ class _MapPageState extends State<MapPage> {
       padding: const EdgeInsets.all(7.0),
     );
   }
+
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<User>(context);
     return Scaffold(
-      body: _initialPosition == null 
-      ? Container(child: Center(child:Text('loading map..', 
-      style: TextStyle(fontFamily: 'Avenir-Medium', 
-      color: Colors.grey[400]),),),) 
-      : Container(
-        child: Stack(children: <Widget>[
-          GoogleMap(
-            markers: _markers,
-
-            mapType: _currentMapType,
-            initialCameraPosition: CameraPosition(
-              target: _initialPosition,
-              zoom: 14.4746,
+      body: _initialPosition == null
+          ? Container(
+            color: Colors.black38,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Container(
+              child: Stack(children: <Widget>[
+                GoogleMap(
+                  markers: _markers,
+                  mapType: _currentMapType,
+                  initialCameraPosition: CameraPosition(
+                    target: _initialPosition,
+                    zoom: 14.4746,
+                  ),
+                  onMapCreated: (controller) {
+                    controller1.complete(controller);
+                    _locationAdapter.saveCurrentLocation(user, _initialPosition);
+                  },
+                  zoomGesturesEnabled: true,
+                  onCameraMove: _onCameraMove,
+                  myLocationEnabled: true,
+                  compassEnabled: true,
+                  myLocationButtonEnabled: false,
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                      margin: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                      child: Column(
+                        children: <Widget>[
+                          mapButton(
+                              _onMapTypeButtonPressed,
+                              Icon(
+                                IconData(0xf473,
+                                    fontFamily: CupertinoIcons.iconFont,
+                                    fontPackage:
+                                        CupertinoIcons.iconFontPackage),
+                              ),
+                              Colors.green),
+                        ],
+                      )),
+                )
+              ]),
             ),
-            onMapCreated: _onMapCreated,
-            zoomGesturesEnabled: true,
-            onCameraMove: _onCameraMove,
-            myLocationEnabled: true,
-            compassEnabled: true,
-            myLocationButtonEnabled: false,
-
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-                margin: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
-                child: Column(
-                  children: <Widget>[
-                    mapButton(_onAddMarkerButtonPressed,
-                        Icon(
-                            Icons.add_location
-                        ), Colors.blue),
-                    mapButton(
-                        _onMapTypeButtonPressed,
-                        Icon(
-                          IconData(0xf473,
-                              fontFamily: CupertinoIcons.iconFont,
-                              fontPackage: CupertinoIcons.iconFontPackage),
-                        ),
-                        Colors.green),
-                  ],
-                )),
-          )
-        ]),
-      ),
     );
   }
 }
