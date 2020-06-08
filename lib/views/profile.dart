@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mileo/map/location_adapter.dart';
@@ -11,34 +12,40 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  LocationAdapter _locationAdapter = LocationAdapter();
-
   static LatLng _initialPosition;
 
   @override
   void initState() {
     super.initState();
-    // _getUserLocation();
-    _locationAdapter.getUserLocation().then((value) {
+    locationAdapter.getUserLocation().then((value) {
       setState(() {
         _initialPosition = value;
       });
     });
   }
 
+  LocationAdapter locationAdapter = LocationAdapter();
+
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
     return Container(
+      color: Colors.black54,
       child: Center(
-          child: FlatButton(
-        child: Text('Upload something'),
-        onPressed: () {
-          if (_initialPosition != null) {
-            _locationAdapter.saveCurrentLocation(user, _initialPosition);
-          }
-        },
-      )),
+        child: CupertinoButton(
+          child: Text('Do something'),
+          color: Colors.red,
+          onPressed: () async{
+            if(_initialPosition != null){
+              var users = await locationAdapter.getUsersAround(_initialPosition);
+              print(users.length);
+            }
+            else {
+              print('Pos is null');
+            }
+          },
+        ),
+      ),
     );
   }
 }

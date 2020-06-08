@@ -65,3 +65,4 @@ const String isNotSignInWithEmailLinkMessage =
 const String MESSAGES_COLLECTION = 'messages';
 const String CONTACTS_COLLECTION = 'contacts';
 const String USERS_COLLECTION = 'users';
+const String LOCATIONS_COLLECTION = 'locations';
