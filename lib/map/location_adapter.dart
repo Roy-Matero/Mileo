@@ -44,29 +44,33 @@ class LocationAdapter {
 
   Future saveCurrentLocation(User user, LatLng currentLatLng) async {
     GeoFirePoint currentLocation = geo.point(
-        latitude: currentLatLng.latitude, longitude: currentLatLng.latitude);
+        latitude: currentLatLng.latitude, longitude: currentLatLng.longitude);
     await locationReference.document(user.uid).setData({
       'uid': user.uid,
-      'location': currentLocation.data,
+      'position': currentLocation.data,
     });
   }
 
-  getUsersAround(LatLng currentLatLng) async{
-    var usersList = [];
-    double radius = 50;
-    String field = 'location';
-    Stream<List<DocumentSnapshot>> stream = geo.collection(collectionRef: locationReference).within(
-        center: geo.point(
-            latitude: currentLatLng.latitude,
-            longitude: currentLatLng.longitude),
-        radius: radius,
-        field: field);
-        stream.listen((List<DocumentSnapshot>  documentsList) {
-          print('Raw length is ${documentsList.length}');
-          for(var i = 0; i < documentsList.length; i++){
-            usersList.add(documentsList[i].data);
-          }
-        });
-        return usersList;
+  getUsersAround(LatLng currentLatLng) async {
+    List<Map> userList = [];
+    GeoFirePoint center = geo.point(
+        latitude: currentLatLng.latitude, longitude: currentLatLng.longitude);
+    double radius = 100;
+    String field = 'position';
+    Stream<List<DocumentSnapshot>> stream = geo
+        .collection(collectionRef: locationReference)
+        .within(
+            center: center,
+            radius: radius,
+            field: field);
+    stream.listen((List<DocumentSnapshot> documentsList) {
+      print('Raw length is ${documentsList.length}');
+      for (var i = 0; i < documentsList.length; i++) {
+        userList.add(documentsList[i].data);
+        // print(documentsList[i].data);
+      }
+    });
+    print('Users length is ${userList.length}');
+    return userList;
   }
 }
