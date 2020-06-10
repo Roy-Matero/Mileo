@@ -16,6 +16,8 @@ class LocationAdapter {
   LocLib.PermissionStatus permissionGranted;
   LocLib.LocationData locationData;
 
+  List nearbyUsersList = [];
+
   CollectionReference locationReference =
       _firestore.collection(LOCATIONS_COLLECTION);
 
@@ -51,8 +53,8 @@ class LocationAdapter {
     });
   }
 
-  getUsersAround(LatLng currentLatLng) async {
-    List<Map> userList = [];
+   getUsersAround(LatLng currentLatLng) async{
+    
     GeoFirePoint center = geo.point(
         latitude: currentLatLng.latitude, longitude: currentLatLng.longitude);
     double radius = 100;
@@ -64,13 +66,18 @@ class LocationAdapter {
             radius: radius,
             field: field);
     stream.listen((List<DocumentSnapshot> documentsList) {
-      print('Raw length is ${documentsList.length}');
+      // print('Raw length is ${documentsList.length}');
       for (var i = 0; i < documentsList.length; i++) {
-        userList.add(documentsList[i].data);
+        if(! nearbyUsersList.contains(documentsList[i].data)){
+          nearbyUsersList.add(documentsList[i].data);
+        }
         // print(documentsList[i].data);
       }
+      // return documentsList;
     });
-    print('Users length is ${userList.length}');
-    return userList;
+    
+    if(nearbyUsersList.length != 0){
+      return nearbyUsersList;
+    }
   }
 }

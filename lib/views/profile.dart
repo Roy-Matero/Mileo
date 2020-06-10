@@ -50,7 +50,12 @@ class _ProfileState extends State<Profile> {
               onPressed: () async{
                 if(_initialPosition != null){
                   var users = await locationAdapter.getUsersAround(_initialPosition);
-                  print(users.length);
+                  if(users != null){
+                    print(users[0].toString());
+                    print('Resulting users = ${users.length}');
+                  } else {
+                    print('Users are null');
+                  }
                 }
                 else {
                   print('Pos is null');
