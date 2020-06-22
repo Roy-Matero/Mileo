@@ -38,8 +38,8 @@ class LocationAdapter {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-    List<Placemark> placemark = await Geolocator()
-        .placemarkFromCoordinates(position.latitude, position.longitude);
+    // List<Placemark> placemark = await Geolocator()
+    //     .placemarkFromCoordinates(position.latitude, position.longitude);
     initialPosition = LatLng(position.latitude, position.longitude);
     return initialPosition;
   }

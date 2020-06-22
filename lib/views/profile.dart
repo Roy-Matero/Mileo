@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mileo/map/location_adapter.dart';
-import 'package:mileo/models/user_model.dart';
+// import 'package:mileo/models/user_model.dart';
 import 'package:mileo/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +28,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<User>(context);
+    // var user = Provider.of<User>(context);
     var authService = Provider.of<AuthService>(context);
     return SafeArea(
           child: Scaffold(

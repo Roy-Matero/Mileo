@@ -13,12 +13,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PersistentTabController _tabController;
-
+  var index;
   @override
     void initState() { 
       super.initState();
-      _tabController = PersistentTabController(initialIndex: 2);
+      setState(() {
+        index = 0;
+      });
     }
 
   List<Widget> screensList = [
@@ -27,46 +28,38 @@ class _HomeState extends State<Home> {
     Profile(),
   ];
 
-  List<PersistentBottomNavBarItem> tabBarItems = [
-    PersistentBottomNavBarItem(
+  List<BottomNavigationBarItem> tabBarItems = [
+    BottomNavigationBarItem(
       icon: Icon(Icons.dashboard),
-      title: 'DashBoard',
-      activeColor: Color(0xFF0EF7F7),
-      // activeColor: Colors.red,
-      inactiveColor: Color(0xEFD0D3DD),
+      title: Text('DashBoard'),
+      // activeColor: Color(0xFF0EF7F7),
+      // inactiveColor: Color(0xEFD0D3DD),
     ),
-    PersistentBottomNavBarItem(
+    BottomNavigationBarItem(
       icon: Icon(Icons.map),
-      title: 'Map',
-      activeColor: Color(0xFF0EF7F7),
-      inactiveColor: Color(0xEFD0D3DD),
+      title: Text('Map'),
+      // activeColor: Color(0xFF0EF7F7),
+      // inactiveColor: Color(0xEFD0D3DD),
     ),
-    PersistentBottomNavBarItem(
+    BottomNavigationBarItem(
       icon: Icon(Icons.face),
-      title: 'Profile',
-      activeColor: Color(0xFF0EF7F7),
-      inactiveColor: Color(0xEFD0D3DD),
+      title: Text('Profile'),
+      // activeColor: Color(0xFF0EF7F7),
+      // inactiveColor: Color(0xEFD0D3DD),
     ),
   ];
 
   Widget bottomNavBar(BuildContext context){
     var _metrics = MediaQuery.of(context).size;
     return Container(
-      child: PersistentTabView(
-        controller: _tabController,
-        screens: screensList,
-        items: tabBarItems,
-        neumorphicProperties: NeumorphicProperties(
-          showSubtitleText: true,
-        ),
-        navBarHeight: _metrics.height * .09,
-        navBarStyle: NavBarStyle.neumorphic,
+      child: BottomNavigationBar(
         backgroundColor: Color(0xEF344589),
-        onItemSelected: (value) {
+        onTap: (value) {
           setState(() {
-            _tabController.index = value;
+            index = value;
           });
         },
+        items: tabBarItems,
       )
     );
   }
@@ -74,9 +67,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       bottomNavigationBar: bottomNavBar(context),
-      body: screensList[_tabController.index],
+      body: screensList[index],
     );
   }
 }
